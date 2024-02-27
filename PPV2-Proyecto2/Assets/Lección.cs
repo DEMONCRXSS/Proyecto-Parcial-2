@@ -16,5 +16,8 @@ public struct Lección
 
 public class Subject : ScriptableObject
 {
+    [Header("GameObject Configuration")]
+    public int lesson;
+
     public List<Lección> leccionList;
 }
