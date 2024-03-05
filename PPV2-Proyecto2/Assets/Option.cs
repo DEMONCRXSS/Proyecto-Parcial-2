@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Option : MonoBehaviour
 {
     public int OptionID;
     public string OptionName;
@@ -13,6 +13,16 @@ public class NewBehaviourScript : MonoBehaviour
     void Start()
     {
         transform.GetChild(0).GetComponent<TMP_Text>().text = OptionName;
+    }
+
+    public void UpdateText()
+    {
+        transform.GetChild(0).GetComponent<TMP_Text>().text = OptionName;
+    }
+
+    public void SelectOption()
+    {
+        LevelMannager.Instance.SetPlayerAnswer(OptionID);
     }
 
     // Update is called once per frame

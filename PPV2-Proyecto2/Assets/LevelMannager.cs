@@ -1,19 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LevelMannager : MonoBehaviour
 {
+    public static LevelMannager Instance;
     [Header("Level Data")]
     public Subject Lesson;
+
+    [Header("User Interface")]
+    public TMP_Text QuestionTxt;
+    public List<Option> Options;
 
     [Header("Game Configuration")]
     public int questionAmount = 0;
     public int currentQuestion = 0;
     public string question;
     public string correctAnswer;
+    public int answerfromPlayer;
+
     [Header("Current Lesson")]
     public Lección currentLesson;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            return;
+        }
+        else
+        {
+            Instance = this; 
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,8 +57,15 @@ public class LevelMannager : MonoBehaviour
             // Establecemos la respuesta correcta
             correctAnswer = currentLesson.options[currentLesson.correctAnswer];
             // Establecemos la pregunta en UI
-            // QuestionTxt.Text = question;
-           
+            QuestionTxt.text = question;
+            // Establecemos las Opciones
+            for (int i = 0; i < currentLesson.options.Count; i++)
+            {
+                Options[i].GetComponent<Option>().OptionName = currentLesson.options[i];
+                Options[i].GetComponent<Option>().OptionID = i;
+                Options[i].GetComponent<Option>().UpdateText();
+            }
+          
         }
         else
         {
@@ -62,4 +89,8 @@ public class LevelMannager : MonoBehaviour
         }
     }
 
+    public void SetPlayerAnswer(int _answer)
+    {
+        answerfromPlayer = _answer;
+    }
 }
