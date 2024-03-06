@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class LevelMannager : MonoBehaviour
@@ -12,6 +13,10 @@ public class LevelMannager : MonoBehaviour
     [Header("User Interface")]
     public TMP_Text QuestionTxt;
     public List<Option> Options;
+    public GameObject CheckButton;
+    public GameObject AnswerContainer;
+    public Color Green;
+    public Color Red;
 
     [Header("Game Configuration")]
     public int questionAmount = 0;
@@ -19,6 +24,8 @@ public class LevelMannager : MonoBehaviour
     public string question;
     public string correctAnswer;
     public int answerfromPlayer;
+    public int answerFromPlayer = 9;
+    
 
     [Header("Current Lesson")]
     public Lección currentLesson;
@@ -76,21 +83,76 @@ public class LevelMannager : MonoBehaviour
 
     public void NextQuestion()
     {
-        if (currentQuestion < questionAmount)
+        if (CheckPlayerState())
         {
-            // Incrementamos el índice de la pregunta actual
-            currentQuestion++;
-            // Cargar la nueva pregunta
-            LoadQuestion();
+            if (currentQuestion < questionAmount)
+            {
+                //Revisamos si la respuesta es correcta o no
+                bool isCorrect = currentLesson.options[answerFromPlayer] == correctAnswer;
+
+                AnswerContainer.SetActive(true);
+
+                if (isCorrect)
+                {
+                    Debug.Log("Respuesta correcta." + question + ": " + correctAnswer);
+                }
+                else
+                {
+                    Debug.Log("Respuesta Incorrecta." + question + ": " + correctAnswer);
+                }
+
+                // Incrementamos el índice de la pregunta actual
+                currentQuestion++;
+
+                // Cargar la nueva pregunta
+                LoadQuestion();
+
+                // Reset answer from player
+                answerfromPlayer = 9;
+            }
+            else
+            {
+                // Cambio de escena
+            }
         }
-        else
-        {
-            // Cambio de escena
-        }
+
+    }
+
+    private IEnumerator ShowResultAndLoadQuestion(bool isCorrect)
+    {
+        yield return new WaitForSeconds(2.5f); //Ajusta el tiempo que deseas mostrar el resultado
+
+        //Ocultar el contenedor de respuestas
+        AnswerContainer.SetActive(false);
+
+        //Cargar la nueva pregunta
+        LoadQuestion();
+
+        //Activa el botón después de mostrar el resultado
+        //Puedes hacer esto aquí o en LoadQuestion(), dependiendo de tu estructura
+        //por ejemplo, si el botón está en el mismo gameObject que el script:
+        //getComponent<Button>().intercatable = true;
+        CheckPlayerState();
     }
 
     public void SetPlayerAnswer(int _answer)
     {
         answerfromPlayer = _answer;
+    }
+
+    public bool CheckPlayerState()
+    {
+        if (answerFromPlayer != 9)
+        {
+            CheckButton.GetComponent<Button>().interactable = true;
+            CheckButton.GetComponent<Image>().color = Color.white;
+            return true;
+        }
+        else
+        {
+            CheckButton.GetComponent<Button>().interactable = false;
+            CheckButton.GetComponent<Image>().color = Color.grey;
+            return false;
+        }
     }
 }
