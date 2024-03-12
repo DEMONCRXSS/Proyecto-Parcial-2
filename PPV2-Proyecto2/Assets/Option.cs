@@ -23,6 +23,7 @@ public class Option : MonoBehaviour
     public void SelectOption()
     {
         LevelMannager.Instance.SetPlayerAnswer(OptionID);
+        LevelMannager.Instance.CheckPlayerState();
     }
 
     // Update is called once per frame

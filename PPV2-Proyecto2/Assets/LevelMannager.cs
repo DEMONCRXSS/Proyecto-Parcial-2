@@ -12,6 +12,7 @@ public class LevelMannager : MonoBehaviour
 
     [Header("User Interface")]
     public TMP_Text QuestionTxt;
+    public TMP_Text QuestionTxt1;
     public List<Option> Options;
     public GameObject CheckButton;
     public GameObject AnswerContainer;
@@ -23,7 +24,6 @@ public class LevelMannager : MonoBehaviour
     public int currentQuestion = 0;
     public string question;
     public string correctAnswer;
-    public int answerfromPlayer;
     public int answerFromPlayer = 9;
     
 
@@ -49,6 +49,7 @@ public class LevelMannager : MonoBehaviour
         questionAmount = Lesson.leccionList.Count;
         // Cargar la primera pregunta
         LoadQuestion();
+        CheckPlayerState();
 
     }
 
@@ -94,10 +95,12 @@ public class LevelMannager : MonoBehaviour
 
                 if (isCorrect)
                 {
+                    AnswerContainer.GetComponent<Image>().color = Green;
                     Debug.Log("Respuesta correcta." + question + ": " + correctAnswer);
                 }
                 else
                 {
+                    AnswerContainer.GetComponent<Image>().color = Red;
                     Debug.Log("Respuesta Incorrecta." + question + ": " + correctAnswer);
                 }
 
@@ -105,10 +108,10 @@ public class LevelMannager : MonoBehaviour
                 currentQuestion++;
 
                 // Cargar la nueva pregunta
-                LoadQuestion();
+                StartCoroutine(ShowResultAndLoadQuestion(isCorrect));
 
                 // Reset answer from player
-                answerfromPlayer = 9;
+                answerFromPlayer = 9;
             }
             else
             {
@@ -137,7 +140,7 @@ public class LevelMannager : MonoBehaviour
 
     public void SetPlayerAnswer(int _answer)
     {
-        answerfromPlayer = _answer;
+        answerFromPlayer = _answer;
     }
 
     public bool CheckPlayerState()
