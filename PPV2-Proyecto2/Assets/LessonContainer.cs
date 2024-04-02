@@ -63,7 +63,9 @@ public class LessonContainer : MonoBehaviour
         {
             //Active el objeto si está desactivado
             lessonContainer.SetActive(true);
+            
         }
+
     }
 
 }
