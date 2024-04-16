@@ -8,8 +8,9 @@ public class LevelMannager : MonoBehaviour
 {
     public static LevelMannager Instance;
     [Header("Level Data")]
-    public Subject Lesson;
+    public SubjectContainer subject;
 
+    //GameObjects para UI
     [Header("User Interface")]
     public TMP_Text QuestionTxt;
     public TMP_Text QuestionTxt1;
@@ -19,6 +20,7 @@ public class LevelMannager : MonoBehaviour
     public Color Green;
     public Color Red;
 
+    //Esto recibirá el script del scriptableObject
     [Header("Game Configuration")]
     public int questionAmount = 0;
     public int currentQuestion = 0;
@@ -26,7 +28,6 @@ public class LevelMannager : MonoBehaviour
     public string correctAnswer;
     public int answerFromPlayer = 9;
     
-
     [Header("Current Lesson")]
     public Lección currentLesson;
 
@@ -45,12 +46,11 @@ public class LevelMannager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Establecemos la cantidad de preguntas en la leccion
-        questionAmount = Lesson.leccionList.Count;
-        // Cargar la primera pregunta
+        subject = SaveSystem.Instance.subject;
+        //Establecemos la cantidad de preguntas en la leccion
+        questionAmount = subject.LeccionList.Count;
+        //Cargar la primera pregunta
         LoadQuestion();
-        CheckPlayerState();
-
     }
 
     private void LoadQuestion()
@@ -59,7 +59,7 @@ public class LevelMannager : MonoBehaviour
         if (currentQuestion < questionAmount)
         {
             // Establecemos la leccion actual
-            currentLesson = Lesson.leccionList[currentQuestion];
+            currentLesson = subject.LeccionList[currentQuestion];
             // Establecemos la pregunta
             question = currentLesson.lessons;
             // Establecemos la respuesta correcta
@@ -73,8 +73,8 @@ public class LevelMannager : MonoBehaviour
                 Options[i].GetComponent<Option>().OptionID = i;
                 Options[i].GetComponent<Option>().UpdateText();
             }
-          
         }
+          
         else
         {
             // si llegamos al final de las preguntas
@@ -82,8 +82,10 @@ public class LevelMannager : MonoBehaviour
         }
     }
 
+    //Pasar siguiente pregunta
     public void NextQuestion()
     {
+        //Revisa la respuesta que selecciona el jugador
         if (CheckPlayerState())
         {
             if (currentQuestion < questionAmount)
@@ -91,15 +93,19 @@ public class LevelMannager : MonoBehaviour
                 //Revisamos si la respuesta es correcta o no
                 bool isCorrect = currentLesson.options[answerFromPlayer] == correctAnswer;
 
+                //Activa el Answercontainer
                 AnswerContainer.SetActive(true);
 
+                //Revisa si la respuesta es correcta
                 if (isCorrect)
                 {
+                    //El contenedor cambia a color verde si la respuesta es correcta
                     AnswerContainer.GetComponent<Image>().color = Green;
                     Debug.Log("Respuesta correcta." + question + ": " + correctAnswer);
                 }
-                else
+                else //Si no es correcto
                 {
+                    //El contenedor cambia a color rojo si la respuesta es incorrecta
                     AnswerContainer.GetComponent<Image>().color = Red;
                     Debug.Log("Respuesta Incorrecta." + question + ": " + correctAnswer);
                 }
@@ -107,10 +113,11 @@ public class LevelMannager : MonoBehaviour
                 // Incrementamos el índice de la pregunta actual
                 currentQuestion++;
 
-                // Cargar la nueva pregunta
+                //ShowResultAndLoadQuestion comienza una corrutina (las corrutinas comunmente son utilizadas en escenarios scenarios donde se necesitan procesos de larga duración, como la carga de recursos)
+                //que suspende por 2 segundos el contenedor de respuesta y cambiará de pregunta
                 StartCoroutine(ShowResultAndLoadQuestion(isCorrect));
 
-                // Reset answer from player
+                //Reinicia la respuesta del jugador para la nueva pregunta
                 answerFromPlayer = 9;
             }
             else
@@ -121,6 +128,7 @@ public class LevelMannager : MonoBehaviour
 
     }
 
+    //Inicia una corrutina que suspende el código dependiendo de lo que se especifique dentro de esta
     private IEnumerator ShowResultAndLoadQuestion(bool isCorrect)
     {
         yield return new WaitForSeconds(2.5f); //Ajusta el tiempo que deseas mostrar el resultado
@@ -138,22 +146,30 @@ public class LevelMannager : MonoBehaviour
         CheckPlayerState();
     }
 
+    //Asignará la respuesta del jugador
     public void SetPlayerAnswer(int _answer)
     {
+        //Actualiza la respuesta del jugador
         answerFromPlayer = _answer;
     }
 
+    //Nos aseguramos si el jugador presionó un botón para cambiar su color y activarlo
     public bool CheckPlayerState()
     {
+        //nos aseguramos si los botones cambian de color al ser presionados
         if (answerFromPlayer != 9)
         {
+            //Actualizamos el componente boton para que sea interactuable
             CheckButton.GetComponent<Button>().interactable = true;
+            //Actualizamos el componente Imagen para que cambie su color
             CheckButton.GetComponent<Image>().color = Color.white;
             return true;
         }
-        else
+        else //Si no se interactua con el boton
         {
+            //Actualizamos el componente boton para que no se pueda presionar
             CheckButton.GetComponent<Button>().interactable = false;
+            //Actualizamos el componente Imagen para que cambie su color
             CheckButton.GetComponent<Image>().color = Color.grey;
             return false;
         }

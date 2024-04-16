@@ -12,23 +12,24 @@ public class Option : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Obtenemos el componente texto para actualizarlo al texto de la pregunta de nuestro scriptableObejct
         transform.GetChild(0).GetComponent<TMP_Text>().text = OptionName;
     }
 
+    //Actualizar texto
     public void UpdateText()
     {
+        //Obtenemos el child para actualizarlo a la lista del scriptableObject
         transform.GetChild(0).GetComponent<TMP_Text>().text = OptionName;
     }
 
+    //Nos aseguramos de que una opción haya sido seleccionada y llamamos 2 funciones
+    //Del script: Levelmanager
     public void SelectOption()
     {
+        //Asignamos la respuesta correcta en función del ID del cript: Leccion
         LevelMannager.Instance.SetPlayerAnswer(OptionID);
+        //Con Levelmanager comprobamos si una respuesta fue selecionada y si los botones son interactuables
         LevelMannager.Instance.CheckPlayerState();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

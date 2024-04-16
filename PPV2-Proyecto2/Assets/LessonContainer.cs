@@ -21,6 +21,7 @@ public class LessonContainer : MonoBehaviour
 
     [Header("Lesson Data")]
     public ScriptableObject LessonData;
+    public string LessonA;
 
     // Start is called before the first frame update
     void Start()
@@ -33,19 +34,21 @@ public class LessonContainer : MonoBehaviour
         {
             Debug.LogWarning("GameObject Nulo, revisa las variables de tipo GameObjec lessonContainer");
         }
-        
     }
 
-
+    //Actualiza el UI
     public void OnUpdateUI()
     {
+         //Accedemos a los textos StageTitle y LessonStage
         if (StageTitle != null || LessonStage != null)
         {
+            //Actializa los textos que se mostraran en la UI
             StageTitle.text = "Leccion " + Lection;
             LessonStage.text = "Leccion " + CurrentLession + " de" + TotalLessions;
         }
         else
         {
+            //Enviamos un mensaje por si los textos no están puestos
             Debug.LogWarning("GameObject Nulo, revisa las variables de tipo TMP_Text");
         }
     }
@@ -54,6 +57,8 @@ public class LessonContainer : MonoBehaviour
 
     public void EnableWindow()
     {
+        OnUpdateUI();
+        //Hacemos que la ventana de la lección aparezca y desaparezca
         if (lessonContainer.activeSelf)
         {
             //Desactiva el Objeto si está activo
@@ -61,9 +66,9 @@ public class LessonContainer : MonoBehaviour
         }
         else
         {
-            //Active el objeto si está desactivado
+            //Activa el objeto si está desactivado
             lessonContainer.SetActive(true);
-            
+            MainScript.Instance.SetSelectedLesson(LessonA);
         }
 
     }

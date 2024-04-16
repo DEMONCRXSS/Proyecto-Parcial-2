@@ -648,8 +648,8 @@ GameObject:
   - component: {fileID: 414670404}
   - component: {fileID: 414670403}
   - component: {fileID: 414670402}
-  - component: {fileID: 414670406}
   - component: {fileID: 414670407}
+  - component: {fileID: 414670406}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -706,8 +706,8 @@ Canvas:
   m_GameObject: {fileID: 414670401}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 101146209}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -751,32 +751,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 414670401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35447dfa55b2b4ed1a9b1cc17e65498d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a3a1636bedc840a883702fd579b603d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lesson: {fileID: 11400000, guid: e122b4580066c434388fc1c50f84f3ad, type: 2}
-  QuestionTxt: {fileID: 885311084}
-  QuestionTxt1: {fileID: 0}
-  Options:
-  - {fileID: 2066825614}
-  - {fileID: 856568306}
-  - {fileID: 1229946082}
-  - {fileID: 1507231551}
-  - {fileID: 1022909973}
-  CheckButton: {fileID: 862185180}
-  AnswerContainer: {fileID: 1778580355}
-  Green: {r: 0.3244752, g: 0.8490566, b: 0.19624422, a: 1}
-  Red: {r: 0.9245283, g: 0, b: 0, a: 1}
-  questionAmount: 0
-  currentQuestion: 0
-  question: 
-  correctAnswer: 
-  answerFromPlayer: 9
-  currentLesson:
+  data:
     ID: 0
     lessons: 
     options: []
     correctAnswer: 0
+  subject: {fileID: 0}
 --- !u!114 &414670407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,9 +769,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 414670401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86cb772e1e46344d08821c5419b94f37, type: 3}
+  m_Script: {fileID: 11500000, guid: 35447dfa55b2b4ed1a9b1cc17e65498d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  subject: {fileID: 0}
+  QuestionTxt: {fileID: 0}
+  QuestionTxt1: {fileID: 0}
+  Options:
+  - {fileID: 2066825614}
+  - {fileID: 856568306}
+  - {fileID: 1229946082}
+  - {fileID: 1507231551}
+  - {fileID: 1022909973}
+  CheckButton: {fileID: 0}
+  AnswerContainer: {fileID: 0}
+  Green: {r: 0.14481235, g: 1, b: 0, a: 0}
+  Red: {r: 1, g: 0, b: 0, a: 0}
+  questionAmount: 0
+  currentQuestion: 0
+  question: 
+  correctAnswer: 
+  answerFromPlayer: 9
+  currentLesson:
+    ID: 0
+    lessons: 
+    options:
+    - 
+    correctAnswer: 0
 --- !u!1 &432620272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,7 +1102,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 414670406}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelMannager, Assembly-CSharp
         m_MethodName: NextQuestion
         m_Mode: 1

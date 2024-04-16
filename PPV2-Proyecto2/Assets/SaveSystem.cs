@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class SaveSystem : MonoBehaviour
 {
     public static SaveSystem Instance;
 
-    //public Leccion data;
+    public Lección data;
     public SubjectContainer subject;
 
+    //Singleton es un patrón de diseño que se asegura que una clase tenga una sola instancia y da un punto de acceso global a esa instancia
     private void Awake()
     {
+        //Creamos la instancia
         if (Instance != null)
         {
             return;
@@ -20,49 +23,84 @@ public class SaveSystem : MonoBehaviour
         {
             Instance = this;
         }
+        subject = LoadFromJSON<SubjectContainer>(PlayerPrefs.GetString("selectedLesson"));
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //SaveToJSON("LeccionDummy", data);
+        SaveToJSON("LeccionDummy", data);
+        //SaveToJSON("LeccionDummy", subject);
 
-       //subject = LoadFromJSON<SubjectContainer>("SubjectDummy");
+        CreateFile("Pepe", ".data");
+
+        //subject = LoadFromJSON<SubjectContainer>("SubjectDummy");
     }
 
-    //public void SaveToJSON(string_fileName, object_data)
-    //{
-        //if (_data != null)
-        //{
-            //string JSONData = JsonUtility.ToJson(_data, true);
+    public void CreateFile(string fileName, string extension)
+    {
 
-            //if(JSONData.Length != 0)
-            //{
-                //Debug.Log("JSON STRING: " + JSONData);
+    }
 
-                //string fileName = _fileName + ".json";
+    public void SaveToJSON(string _fileName, object _data)
+    {
+        if (_data != null)
+        {
+            //_data va a transformarse en un archivo JSON
+            string JSONData = JsonUtility.ToJson(_data, true);
 
-                //string filePath = filePath.Combine(Application.dataPath + "/Resource/JSONS", fileName);
+            if (JSONData.Length != 0)
+            {
+                Debug.Log("JSON STRING: " + JSONData);
 
-                //filePath.WriteAllText(filePath, JSONData);
-
-                //Debug.Log("JSON almacenamiento en la direccion: " + filePath);
-
-           // }
-            //else
-            //{7
-               // Debug.LogWarning("ERROR- fileSystem: _data is null, check for param [object_data");
-            //}
-       // }
-       // else
-       // {
+                //Creamos el archivo que se va a almacenar
+                string fileName = _fileName + ".json";
+                //Direccion donde se va a almacenar el archivo
+                string filePath = Path.Combine(Application.dataPath + "/Resources/JSONS", fileName);
+                //Escribir el recurso en memoria
+                File.WriteAllText(filePath, JSONData);
+                //Para indicar en donde se guardó el archivo
+                Debug.Log("JSON almacenado en la direccion: " + filePath);
+            }
+            else
+            {
+                Debug.LogWarning("ERROR- FileSystem: _data is null, check for param [object _data]");
+            }
+        }
+        else
+        {
 
         }
-    //}
+    }
 
-   // // Update is called once per frame
-   // void Update()
-    //{
-        
-   // }
-//}
+    //Esta funcion carga datos desde un archivo JSON y los deserializa en un objecto del tipo especificado por el usuario
+    //Usamos una definición generica definida como "T" para que se pueda trabajar con cualquier tipo de dato que se quiera llamar
+    public T LoadFromJSON<T>(string _fileName) where T : new()
+    {
+        //Creacion de intancia del tipo "T"
+        T Dato = new T();
+        //Obtenemos la ruta de archivo de los JSON
+        string path = Application.dataPath + "/Resources/JSONS" + _fileName + ".json";
+        string JSONData = "";
+        //Comprobamos si el archivo JSON está en la ruta especificada
+        if (File.Exists(path))
+        {
+            JSONData = File.ReadAllText(path);
+            Debug.Log("JSON STRING: " + JSONData);
+        }
+        if (JSONData.Length != 0)
+        {
+            //Esto es para deserializar el JSON en el objecto "dato"
+            //FromJsonOverWrite se encarga de sobreescribir los valores de "Dato" con los valores
+            //del JSON
+            JsonUtility.FromJsonOverwrite(JSONData, Dato);
+        }
+        else
+        {
+            //Si el archivo JSON no se encuentra o esta vacio mandará una advertencia a consola
+            Debug.LogWarning("ERROR - fileSystem: JSONData is emty, check for local variable [string JSONData]");
+        }
+        //Devuelve el objeto deserializado, si el archivo JSON no se pudo cargar se devolverá un objecto vacío
+        return Dato;
+    }
+}

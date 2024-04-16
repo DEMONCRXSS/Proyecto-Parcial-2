@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class SubjectContainer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("GameObject Configuration")]
+    //Definimos el numero de nuestra Leccion
+    [SerializeField]
+    public int Lesson = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("Lession Quest Configuration")]
+    [SerializeField]
+    //Para definir cuantas preguntas tendra nuestra leccion
+    public List<Lección> LeccionList;
 }
