@@ -1,0 +1,64 @@
+{
+  "leccionList": [
+    {
+      "ID": 1,
+      "lessons": "¿Qué lenguaje de programación se utiliza principalmente para el desarrollo en Unity?",
+      "options": [
+        "C#",
+        "Java",
+        "Python",
+        "JavaScript",
+        "Swift"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "ID": 2,
+      "lessons": "¿Cuál de los siguientes no es un componente básico de Unity?",
+      "options": [
+        "GameObject",
+        "Script",
+        "Material",
+        "Texture",
+        "Collider"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "ID": 3,
+      "lessons": "¿Qué función se utiliza para inicializar variables y objetos en Unity?",
+      "options": [
+        "Start()",
+        "Initialize()",
+        "Awake()",
+        "Begin()",
+        "Setup()"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "ID": 4,
+      "lessons": "¿Cuál es el componente de Unity que permite el movimiento de un objeto?",
+      "options": [
+        "Rigidbody",
+        "Animator",
+        "Mesh Renderer",
+        "Audio Source",
+        "Transform"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "ID": 5,
+      "lessons": "¿Qué método se utiliza para detectar colisiones en Unity?",
+      "options": [
+        "OnCollisionEnter()",
+        "OnCollision()",
+        "DetectCollision()",
+        "CheckCollision()",
+        "HandleCollision()"
+      ],
+      "correctAnswer": 0
+    }
+  ]
+}
